@@ -1,19 +1,32 @@
 <script setup lang="ts">
 import ProgramTile from "@/components/ProgramTile.vue";
+import EnrolledProgram from "@/components/EnrolledProgram.vue"
 import { useProgramsStore } from "@/stores/programs";
+import { computed } from "@vue/runtime-core";
 
 const store = useProgramsStore();
 store.loadPrograms();
+
+const enrolledProgams = store.enrolledPrograms
+console.log(enrolledProgams)
+
 </script>
 
 <template>
   <main>
     <section>
       <h2>Enrolled Programs</h2>
-      <p>
+      <p v-if="enrolledProgams.length == 0">
         You have not enrolled in any Programs yet. Click on a Program below to
         enrol.
       </p>
+      <div class="enrolled-con">
+        <EnrolledProgram 
+          v-for="program in enrolledProgams" 
+          :key="program.id"
+          :program="program"  
+        />
+      </div>
     </section>
     <section>
       <h2>All Programs</h2>
@@ -35,6 +48,11 @@ section {
 
 h2 {
   margin-bottom: 1em;
+}
+
+.enrolled-con{
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .tiles {

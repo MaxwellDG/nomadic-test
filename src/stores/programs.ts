@@ -1,15 +1,27 @@
 import { defineStore } from "pinia";
-import axios from "axios";
+import * as MainServer from '@/apis/server'
+import type Program from '@/models/Program'
+
+export type RootState = {
+  programs: Program[];
+};
 
 export const useProgramsStore = defineStore({
   id: "programs",
   state: () => ({
-    programs: null,
-  }),
+    programs: [],
+  } as RootState)
+  ,
+  getters: {
+    enrolledPrograms: (state) => {
+      console.log("called to get enrdolled")
+      return state.programs.filter(j => j.enrolled)
+    }
+  },
   actions: {
     async loadPrograms() {
-      if (this.programs === null) {
-        const response = await axios.get("programs");
+      if (this.programs.length == 0) {
+        const response = await MainServer.allPrograms();
         this.programs = response.data;
       }
     },

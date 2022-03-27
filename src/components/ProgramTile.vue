@@ -1,5 +1,6 @@
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
+import * as MainServer from '@/apis/server';
 
 const props = defineProps({
   program: Object,
@@ -9,10 +10,21 @@ const programImageUrl = computed(() => {
   let image = encodeURIComponent(props.program.image);
   return `https://res.cloudinary.com/nomadic/image/fetch/w_550,h_715,c_fill,e_blur:0,g_north,f_auto,q_80/${image}`;
 });
+
+let isEnrolled = ref(props.program.enrolled)
+
+const enrollInProgram = function(){
+  isEnrolled = true
+  props.program.enrolled = true
+  MainServer.updateProgramStatus(props.program.id, !props.program.enrolled).catch(e => {
+    isEnrolled = false
+    props.program.enrolled = false
+  })
+}
 </script>
 
 <template>
-  <div class="program-tile">
+  <div class="program-tile" >
     <div class="image-tile-wrapper">
       <div class="image-tile">
         <img :src="programImageUrl" :alt="'Cover image for ' + program.title" />
@@ -23,8 +35,8 @@ const programImageUrl = computed(() => {
     </p>
     <p class="schedule">
       <span class="indicator"></span>
-      <span v-if="program.enrolled">Enrolled</span>
-      <span v-else>Start Now</span>
+      <span v-if="isEnrolled">Enrolled</span>
+      <button v-else class="startNow" @click="enrollInProgram">Start Now</button>
     </p>
   </div>
 </template>
@@ -107,6 +119,13 @@ const programImageUrl = computed(() => {
   .schedule {
     display: flex;
     color: #444;
+
+    .startNow{
+      background-color: transparent;
+      border: none;
+      color: #444;
+      cursor: pointer;
+    }
   }
 
   .indicator {
