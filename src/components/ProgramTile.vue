@@ -14,16 +14,11 @@ const programImageUrl = computed(() => {
   return `https://res.cloudinary.com/nomadic/image/fetch/w_550,h_715,c_fill,e_blur:0,g_north,f_auto,q_80/${image}`;
 });
 
-let isEnrolled = ref(props.program.enrolled)
-
 const enrollInProgram = function(){
-  isEnrolled = true
-  props.program.enrolled = true
-  MainServer.updateProgramStatus(props.program.id, props.program.enrolled).then(res => {
-    store.getDetails(props.program.id)
-  }).catch(e => {
-    isEnrolled = false
-    props.program.enrolled = false
+  let program = store.getProgram(props.program.id);
+  MainServer.updateProgramStatus(props.program.id, true).then(res => {
+      program.enrolled = true;
+    }).catch(e => {
   })
 }
 </script>
@@ -40,7 +35,7 @@ const enrollInProgram = function(){
     </p>
     <p class="schedule">
       <span class="indicator"></span>
-      <span v-if="isEnrolled">Enrolled</span>
+      <span v-if="program.enrolled">Enrolled</span>
       <button v-else class="startNow" @click="enrollInProgram">Start Now</button>
     </p>
   </div>

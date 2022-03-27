@@ -15,6 +15,9 @@ export const useProgramsStore = defineStore({
   getters: {
     enrolledPrograms: (state) => {
       return state.programs.filter(j => j.enrolled)
+    },
+    getProgram: (state) => (id: string) => {
+      return state.programs.find(j => j.id === id)
     }
   },
   actions: {
@@ -36,7 +39,7 @@ export const useProgramsStore = defineStore({
           program.team_progress = team_progress;
         }
       }).catch(e => {
-        
+        console.log(e)
       })
     }
   },

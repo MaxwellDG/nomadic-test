@@ -2,7 +2,6 @@
 import ProgramTile from "@/components/ProgramTile.vue";
 import EnrolledProgram from "@/components/EnrolledProgram.vue"
 import { useProgramsStore } from "@/stores/programs";
-import { computed } from "@vue/runtime-core";
 
 const store = useProgramsStore();
 store.loadPrograms();
@@ -17,13 +16,13 @@ store.loadPrograms();
         You have not enrolled in any Programs yet. Click on a Program below to
         enrol.
       </p>
-      <div class="enrolled-con">
-        <EnrolledProgram 
-          v-for="program in store.enrolledPrograms" 
-          :key="program.id"
-          :program="program"  
-        />
-      </div>
+        <div class="enrolled-con">
+          <EnrolledProgram 
+            v-for="program in store.enrolledPrograms" 
+            :key="program.id"
+            :program="program"  
+          />
+        </div>
     </section>
     <section>
       <h2>All Programs</h2>
@@ -48,8 +47,9 @@ h2 {
 }
 
 .enrolled-con{
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
 }
 
 .tiles {
