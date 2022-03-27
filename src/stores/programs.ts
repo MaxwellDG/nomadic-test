@@ -26,13 +26,15 @@ export const useProgramsStore = defineStore({
     },
     async getDetails(id: string) {
       MainServer.getProgramTeamDetails(id).then(res => {
-        let program = this.programs.find(j => j.id === res.data.id)
+        let program = this.programs.find(j => j.id === id)
         const {name, initials, color, your_progress, team_progress} = res.data
-        program.name = name;
-        program.initials = initials;
-        program.color = color;
-        program.your_progress = your_progress;
-        program.team_progress = team_progress;
+        if(program){
+          program.name = name;
+          program.initials = initials;
+          program.color = color;
+          program.your_progress = your_progress;
+          program.team_progress = team_progress;
+        }
       }).catch(e => {
         
       })

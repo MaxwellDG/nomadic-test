@@ -21,11 +21,11 @@ const handleRemoveProgram = function(){
         <div class="right-con">
             <div>
                 <h2>{{program.title}}</h2>
-                <ProgressBlock :text="'Your Progress'" :percent="program.yourProgress">
+                <ProgressBlock :text="'Your Progress'" :percent="program.your_progress">
                     <img src='src/assets/avatar.png' class="top-img"/>
                 </ProgressBlock>
-                <ProgressBlock :text="`Your Team: ${program.name}`" :percent="program.teamProgress">
-                    <span :style="{backgroundColor: program.color}" class="circle">
+                <ProgressBlock :text="`Your Team: ${program.name}`" :percent="program.team_progress">
+                    <span :style="{backgroundColor: `#${program.color}`}" class="circle">
                         <p>{{program.initials}}</p>
                     </span>
                 </ProgressBlock>
