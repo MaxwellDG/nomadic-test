@@ -18,6 +18,6 @@ export const updateProgramStatus = async (id: string, bool: boolean) => {
     })
 }
 
-export const getProgramTeamDetails = async (id: number) => {
+export const getProgramTeamDetails = async (id: string) => {
     return axios({url: `/programs/${id}/team`})
 }

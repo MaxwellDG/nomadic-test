@@ -14,7 +14,6 @@ export const useProgramsStore = defineStore({
   ,
   getters: {
     enrolledPrograms: (state) => {
-      console.log("called to get enrdolled")
       return state.programs.filter(j => j.enrolled)
     }
   },
@@ -25,5 +24,18 @@ export const useProgramsStore = defineStore({
         this.programs = response.data;
       }
     },
+    async getDetails(id: string) {
+      MainServer.getProgramTeamDetails(id).then(res => {
+        let program = this.programs.find(j => j.id === res.data.id)
+        const {name, initials, color, your_progress, team_progress} = res.data
+        program.name = name;
+        program.initials = initials;
+        program.color = color;
+        program.your_progress = your_progress;
+        program.team_progress = team_progress;
+      }).catch(e => {
+        
+      })
+    }
   },
 });

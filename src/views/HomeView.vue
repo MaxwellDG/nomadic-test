@@ -7,22 +7,19 @@ import { computed } from "@vue/runtime-core";
 const store = useProgramsStore();
 store.loadPrograms();
 
-const enrolledProgams = store.enrolledPrograms
-console.log(enrolledProgams)
-
 </script>
 
 <template>
   <main>
     <section>
       <h2>Enrolled Programs</h2>
-      <p v-if="enrolledProgams.length == 0">
+      <p v-if="store.enrolledPrograms.length == 0">
         You have not enrolled in any Programs yet. Click on a Program below to
         enrol.
       </p>
       <div class="enrolled-con">
         <EnrolledProgram 
-          v-for="program in enrolledProgams" 
+          v-for="program in store.enrolledPrograms" 
           :key="program.id"
           :program="program"  
         />

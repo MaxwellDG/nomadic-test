@@ -1,10 +1,13 @@
 <script setup>
 import { computed, ref } from "vue";
+import { useProgramsStore } from "@/stores/programs";
 import * as MainServer from '@/apis/server';
 
 const props = defineProps({
   program: Object,
 });
+
+const store = useProgramsStore();
 
 const programImageUrl = computed(() => {
   let image = encodeURIComponent(props.program.image);
@@ -16,7 +19,9 @@ let isEnrolled = ref(props.program.enrolled)
 const enrollInProgram = function(){
   isEnrolled = true
   props.program.enrolled = true
-  MainServer.updateProgramStatus(props.program.id, !props.program.enrolled).catch(e => {
+  MainServer.updateProgramStatus(props.program.id, props.program.enrolled).then(res => {
+    store.getDetails(props.program.id)
+  }).catch(e => {
     isEnrolled = false
     props.program.enrolled = false
   })

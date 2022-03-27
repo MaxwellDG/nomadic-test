@@ -7,31 +7,8 @@ const props = defineProps({
     program: Object
 });
 
-console.log(props.program.id)
-
-const {id, title, image, enrolled} = props.program;
-let yourProgress = ref('')
-
-onBeforeMount(async () => {
-    if(enrolled)
-        MainServer.getProgramTeamDetails(id).then(res => {
-            console.log("WE GET ArrrrrRES?")
-            console.log(res)
-            if(res.status == 200){
-                let {your_progress, team_progress, color, initials, name} = res.data
-                yourProgress = your_progress
-                // teamProgress = team_progress
-                // color = color
-                // initials = initials
-                // name = name
-            }
-        })
-})
-
 const handleRemoveProgram = function(){
-    enrolled = false
-    MainServer.updateProgramStatus(id, false).catch(() => {
-        enrolled = true
+    MainServer.updateProgramStatus(props.program.id, false).catch(() => {
     })
 }
 
@@ -40,16 +17,16 @@ const handleRemoveProgram = function(){
 
 <template>
     <div class="enrolledProgram">
-        <img :src="image" class="programImg"/>
+        <img :src="program.image" class="programImg"/>
         <div class="right-con">
             <div>
-                <h2>{{title}}</h2>
-                <ProgressBlock :text="'Your Progress'" :percent="yourProgress">
+                <h2>{{program.title}}</h2>
+                <ProgressBlock :text="'Your Progress'" :percent="program.yourProgress">
                     <img src='src/assets/avatar.png' class="top-img"/>
                 </ProgressBlock>
-                <ProgressBlock :text="`Your Team: ${props.teamName}`" :percent="teamProgress">
-                    <span :style="{backgroundColor: color}" class="circle">
-                        <p>{{initials}}</p>
+                <ProgressBlock :text="`Your Team: ${program.name}`" :percent="program.teamProgress">
+                    <span :style="{backgroundColor: program.color}" class="circle">
+                        <p>{{program.initials}}</p>
                     </span>
                 </ProgressBlock>
             </div>
